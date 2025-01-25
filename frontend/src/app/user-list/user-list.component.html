@@ -1,0 +1,18 @@
+<!-- src/app/components/user-list/user-list.component.html -->
+<div class="user-list">
+  <h2>Users</h2>
+  <div *ngIf="isLoading">Loading users...</div>
+  <table *ngIf="!isLoading">
+    <ng-container *ngFor="let user of users">
+      <tr>
+        <td>
+          <app-user-cell
+            [user]="user"
+            (deleteUser)="deleteUser(user.id)"
+            (updateUser)="updateUser($event)">
+          </app-user-cell>
+        </td>
+      </tr>
+    </ng-container>
+  </table>
+</div>

@@ -1,0 +1,46 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h5>Chat</h5>
+    <button class="btn-close" (click)="closeChat()">×</button>
+  </div>
+  <div class="chat-body">
+    <div
+      *ngFor="let message of messages"
+      [ngClass]="{
+        'sent-message': message.senderName === username,
+        'received-message': message.senderName !== username
+      }"
+    >
+      <div
+        class="message-content"
+        [ngStyle]="{
+          'background-color': message.senderName === username ? '#007bff' : '#6c757d',
+          'color': 'white'
+        }"
+      >
+        <strong>{{ message.senderName === username ? '' : message.senderName + " :" }}</strong>
+        <span>{{ message.message }}</span>
+      </div>
+      <div class="message-timestamp">
+        {{ message.timestamp | date: 'shortTime' }}
+        <span *ngIf="message.senderName === username" class="message-status">
+          <i
+            class="status-icon"
+            [ngClass]="{
+              'status-sent': message.status === 'SENT',
+              'status-read': message.status === 'READ'
+            }"
+          ></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="chat-footer">
+    <input
+      [(ngModel)]="newMessage"
+      placeholder="Type a message..."
+      class="form-control"
+    />
+    <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+  </div>
+</div>

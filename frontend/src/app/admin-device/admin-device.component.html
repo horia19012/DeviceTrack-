@@ -1,0 +1,38 @@
+<div class="device-card">
+  <div class="device-details">
+    <h3>{{ device.description }}</h3>
+    <p>Address: {{ device.address }}</p>
+    <p>Max Hourly Energy Consumption: {{ device.maxHourlyEnergyConsumption }} kWh</p>
+    <p>User: {{ username }}</p> <!-- Display the username here -->
+  </div>
+
+  <div class="button-container">
+    <button class="btn btn-update" (click)="toggleEdit()">Update</button>
+    <button class="btn btn-delete" (click)="onDelete()">Delete</button>
+  </div>
+</div>
+
+<!-- Editing Form with Animation -->
+<div *ngIf="isEditing" @slideInOut class="edit-form">
+  <h4>Edit Device Details</h4>
+  <form [formGroup]="editForm" (ngSubmit)="onSave()">
+    <label>
+      Description:
+      <input type="text" formControlName="description" />
+    </label>
+    <label>
+      Address:
+      <input type="text" formControlName="address" />
+    </label>
+    <label>
+      Max Hourly Energy Consumption:
+      <input type="number" formControlName="maxHourlyEnergyConsumption" />
+    </label>
+    <label>
+      User ID:
+      <input type="number" formControlName="userId" />
+    </label>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
+  </form>
+</div>

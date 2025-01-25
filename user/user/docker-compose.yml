@@ -1,0 +1,218 @@
+
+services:
+  reverse_proxy:
+    image: traefik:v3.2
+    container_name: reverse-proxy
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/access.log
+      - --log.level=DEBUG
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.forwardedheaders.insecure=true
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_logs:/var/log/traefik
+    networks:
+      clientside_app-network:
+        aliases:
+          - user-app.localhost
+          - device-app.localhost
+          - rabbitmq.localhost
+          - monitoring-app.localhost
+
+  db-user:
+    image: postgres:latest
+    container_name: User_Database
+    restart: always
+    environment:
+      POSTGRES_DB: UserDatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: userPassword
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U user"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+    networks:
+      clientside_app-network:
+        aliases:
+          - user-db
+
+  db-device:
+    image: postgres:latest
+    container_name: Device_Database
+    restart: always
+    environment:
+      POSTGRES_DB: DeviceDatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: userPassword
+    ports:
+      - "5435:5432"
+    volumes:
+      - device_db_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U user"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+    networks:
+      clientside_app-network:
+        aliases:
+          - device-db
+
+  db-monitoring:
+    image: postgres:latest
+    container_name: Monitoring_Database
+    restart: always
+    environment:
+      POSTGRES_DB: MonitoringDatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: userPassword
+    ports:
+      - "5436:5432"
+    volumes:
+      - monitoring_data:/var/lib/postgresql/data
+#    healthcheck:
+#      test: ["CMD-SHELL", "pg_isready -U user"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
+    networks:
+      clientside_app-network:
+        aliases:
+          - monitoring-app
+
+  user_app:
+    image: users_microservice
+#    container_name: user-app
+    build:
+      context: ./  # Ensure this points to your Dockerfile context
+      dockerfile: Dockerfile
+    depends_on:
+      - db-user
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user-app.rule=Host(`user-app.localhost`)"
+      - "traefik.http.services.user-app.loadbalancer.server.port=8080"
+    deploy:
+      replicas: 2
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-user:5432/UserDatabase
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=userPassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - clientside_app-network
+
+  device_app:
+    image: device_microservice
+#    container_name: device-app
+    build:
+      context: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/device/device
+      dockerfile: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/device/device/Dockerfile
+    depends_on:
+      - db-device
+    environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db-device:5432/DeviceDatabase
+        - SPRING_DATASOURCE_USERNAME=user
+        - SPRING_DATASOURCE_PASSWORD=userPassword
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.device-app.rule=Host(`device-app.localhost`)"
+      - "traefik.http.services.device-app.loadbalancer.server.port=8081"
+    deploy:
+      replicas: 2
+    networks:
+      - clientside_app-network
+
+  monitoring_app:
+    image: monitoring_microservice
+    build:
+      context: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/MonitoringAndCommunication
+      dockerfile: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/MonitoringAndCommunication/Dockerfile
+    depends_on:
+      - db-monitoring
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitoring-app.rule=Host(`monitoring-app.localhost`)"
+      - "traefik.http.services.monitoring-app.loadbalancer.server.port=8082"
+    deploy:
+        replicas: 1
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-monitoring:5432/MonitoringDatabase
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=userPassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - clientside_app-network
+
+
+  chat:
+    image: chat_microservice
+#    ports:
+#      - "8088:8085"
+    build:
+      context: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/ChatMicroservice/ChatMicroservice
+      dockerfile: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/ChatMicroservice/ChatMicroservice/Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chat.rule=Host(`chat.localhost`)"
+      - "traefik.http.services.chat.loadbalancer.server.port=8085"
+      - "traefik.http.middlewares.websocket-cors.headers.customrequestheaders.Upgrade=websocket"
+    networks:
+      - clientside_app-network
+
+  angular_app:
+    build:
+      context: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/frontend
+      dockerfile: C:/Users/40741/Desktop/assignment3/ds2024_30645_apostol_horia_assignment_3/frontend/Dockerfile
+    container_name: angular-app
+    depends_on:
+      - user_app
+      - device_app
+      - monitoring_app
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.angular-app.rule=Host(`angular-app.localhost`)"
+      - "traefik.http.services.angular-app.loadbalancer.server.port=80"
+    networks:
+      - clientside_app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rabbitmq.rule=Host(`rabbitmq.localhost`)"
+      - "traefik.http.services.rabbitmq1.loadbalancer.server.port=15672"
+    networks:
+      - clientside_app-network
+
+volumes:
+  user_db_data:
+  device_db_data:
+  monitoring_data:
+  traefik_logs:
+
+networks:
+  clientside_app-network:
+    name: clientside_app_network
+    driver: bridge

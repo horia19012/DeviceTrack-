@@ -1,0 +1,36 @@
+.conversations {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+  margin-bottom: 1rem;
+  color: #007bff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li.conversation-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+li.conversation-item:hover {
+  background-color: #ced4da;
+}
+
+.sender-info {
+  font-size: 16px;
+  color: #343a40;
+  display: flex;
+  align-items: center;
+}

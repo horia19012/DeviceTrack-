@@ -1,0 +1,31 @@
+<div class="notification-panel" [class.open]="isNotificationsOpen">
+  <div class="notification-header">
+    <h4>Notifications</h4>
+    <button class="btn-close" (click)="toggleNotifications()"></button>
+  </div>
+
+  <div class="notification-body">
+    <ul *ngIf="alerts.length > 0">
+      <li *ngFor="let alert of alerts" class="alert-box">
+        <span class="exclamation-mark">!</span>
+        <div>
+          <strong>Device ID:</strong> {{ alert.deviceId }}<br />
+          <strong>Timestamp:</strong> {{ alert.timestamp }}<br />
+          <strong>Hourly Consumption:</strong> {{ alert.consumption }} kWh<br />
+          <strong>Max Allowed:</strong> {{ alert.maxAllowed }} kWh<br />
+        </div>
+      </li>
+    </ul>
+    <ul *ngIf="messages.length > 0">
+      <li *ngFor="let message of filteredMessages" class="alert-box">
+        <span class="exclamation-mark">!</span>
+        <div>
+          <strong>NEW MESSAGE FROM:</strong> {{ message.senderName }}<br />
+        </div>
+      </li>
+    </ul>
+    <p *ngIf="alerts.length === 0">No alerts available.</p>
+    <button *ngIf="alerts.length > 0" class="btn-delete" (click)="deleteAllNotifications()">Clear</button>
+  </div>
+</div>
+

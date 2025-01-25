@@ -1,0 +1,87 @@
+/* Improved Notification Button with Background Color */
+.btn-outline-info {
+  position: relative; /* Ensure dot is positioned relative to the button */
+  padding: 8px 16px; /* Add padding for better click area */
+  font-size: 14px; /* Make text size more appropriate */
+  color: white; /* Button text color */
+  background-color: #007bff; /* Blue background */
+  border: 2px solid #007bff; /* Matching blue border */
+  border-radius: 25px; /* Rounded corners */
+  font-weight: 600; /* Make text bold */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.btn-outline-info:hover {
+  background-color: #0056b3; /* Darker blue background on hover */
+  color: white; /* Keep text white */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow on hover */
+}
+
+.btn-outline-info:focus {
+  outline: none; /* Remove the default outline */
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25); /* Add focus ring */
+}
+
+.notification-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  background-color: yellow;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.notification-dot.active {
+  transform: scale(1.2); /* Slightly enlarge the dot when active */
+}
+
+/* Optional: Add a little animation when a new alert arrives */
+@keyframes dot-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Apply the pulse effect when the dot appears */
+.notification-dot.active-pulse {
+  animation: dot-pulse 1s infinite; /* Pulse animation */
+}
+
+.message-window {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #f8f9fa;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.message-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

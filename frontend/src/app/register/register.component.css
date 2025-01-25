@@ -1,0 +1,45 @@
+.container {
+  max-width: 400px; /* Limit the width of the form */
+  margin: auto; /* Center the form */
+  padding: 20px; /* Add padding around the form */
+  border: 1px solid #ced4da; /* Optional border */
+  border-radius: 5px; /* Optional border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+}
+
+h2 {
+  margin-bottom: 20px; /* Space below the title */
+}
+
+.btn-field {
+  display: flex;             /* Use Flexbox layout */
+  justify-content: center;   /* Center the button horizontally */
+  margin-top: 20px;         /* Optional: space above the button */
+}
+
+.btn {
+  background-color: #28a745; /* Green color */
+  color: white;              /* Text Color */
+  border: none;              /* Remove border */
+  padding: 12px 24px;       /* Add some padding */
+  border-radius: 5px;       /* Rounded corners */
+  cursor: pointer;           /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.2s; /* Animation on hover */
+  font-size: 16px;          /* Font size */
+  min-width: 150px;         /* Minimum width */
+  text-align: center;       /* Center text */
+}
+
+.btn:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: translateY(-2px); /* Slightly lift the button */
+}
+
+.btn:active {
+  transform: translateY(0); /* Reset on click */
+}
+
+.btn:focus {
+  outline: none; /* Remove outline on focus */
+}

@@ -1,0 +1,109 @@
+/* Notification Panel Style */
+.notification-panel {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Hidden by default */
+  width: 300px;
+  height: 100%;
+  background-color: #f8f9fa;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 1050;
+}
+
+.notification-panel.open {
+  right: 0; /* Slide into view */
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.notification-body {
+  padding: 1rem;
+  overflow-y: auto; /* Enable scrolling if content exceeds */
+  max-height: calc(100% - 80px); /* Set max height to leave space for header */
+}
+
+.notification-body ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-body li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff3cd; /* Light yellow for alert background */
+  border-left: 5px solid #ffcc00; /* Yellow left border */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.notification-body li .exclamation-mark {
+  font-size: 30px;
+  color: #ffcc00;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+.notification-body p {
+  text-align: center;
+}
+
+.btn-delete {
+  margin-top: 10px;
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-delete:hover {
+  background-color: darkred;
+}
+
+/* Notification Button Style */
+.notification-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;  /* Positioned at the bottom-right of the screen */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative; /* To position the dot relative to the button */
+}
+
+.notification-button .notification-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ffcc00;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  display: none; /* Hide dot by default */
+}
+
+/* Show the yellow dot when alerts are present */
+.notification-button.alerts-active .notification-dot {
+  display: block;
+}
+
+.notification-button:hover {
+  background-color: #0056b3;
+}

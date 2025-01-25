@@ -1,0 +1,39 @@
+.device-card {
+  padding: 20px;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 8px; /* Rounded corners */
+  border: 1px solid #e0e0e0; /* Light border for subtle separation */
+  margin: 15px auto; /* Centering the card with auto margin */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: box-shadow 0.3s, transform 0.3s; /* Smooth hover effects */
+  width: 400px; /* Set a fixed width for the card */
+  max-width: 90%; /* Ensures the card is responsive */
+}
+
+.device-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+  transform: translateY(-2px); /* Slight upward movement */
+}
+
+h3 {
+  color: #2c3e50; /* Dark color for the title */
+  font-size: 1.5rem; /* Increased font size for title */
+  margin-bottom: 10px; /* Spacing below title */
+}
+
+p {
+  margin: 5px 0; /* Spacing for paragraphs */
+  color: #7f8c8d; /* Subtle gray for text */
+  font-size: 1rem; /* Adjusted font size for better readability */
+}
+
+/* Optional: Adding a hover effect on user ID without underline */
+strong {
+  color: #2980b9; /* Highlight color for strong text */
+  cursor: pointer; /* Pointer cursor to indicate interactivity */
+}
+
+strong:hover {
+  /* Removed underline effect */
+  opacity: 0.8; /* Slightly darkens the text on hover for feedback */
+}

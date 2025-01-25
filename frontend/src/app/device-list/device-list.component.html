@@ -1,0 +1,48 @@
+<div class="device-list">
+  <h2>Devices</h2>
+
+  <!-- Button for Admin to add a new device (visible only on /admin page) -->
+  <button *ngIf="isAdmin && isAdminPage" (click)="toggleAdd()" class="btn">
+    Add Device
+  </button>
+
+  <div *ngIf="isAdding" class="add-form" [ngClass]="{'fade-in': !formFade, 'fade-out': formFade}">
+    <h4>Add Device</h4>
+    <form [formGroup]="addForm" (ngSubmit)="onAdd()">
+      <label>
+        Description:
+        <input type="text" formControlName="description" required />
+      </label>
+      <label>
+        Address:
+        <input type="text" formControlName="address" required />
+      </label>
+      <label>
+        Max Hourly Energy Consumption:
+        <input type="number" formControlName="maxHourlyEnergyConsumption" required />
+      </label>
+      <label>
+        User Name:
+        <input type="text" formControlName="userName" required />
+      </label>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button type="submit" class="btn">Add Device</button>
+      <button type="button" class="btn cancel" (click)="toggleAdd()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Display devices based on page context -->
+  <div *ngFor="let device of isAdminPage ? devices : userDevices">
+    <ng-container *ngIf="isAdminPage; else userDevice">
+      <app-admin-device
+        [device]="device"
+        (deleteDevice)="handleDelete(device.id)">
+      </app-admin-device>
+    </ng-container>
+    <ng-template #userDevice>
+      <app-device [device]="device"></app-device>
+    </ng-template>
+  </div>
+</div>

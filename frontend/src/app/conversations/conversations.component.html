@@ -1,0 +1,19 @@
+<div *ngIf="isConversationsOpen" class="conversations">
+  <h4>Conversations</h4>
+  <ul>
+    <li *ngFor="let sender of senders" class="conversation-item" (click)="openChat(sender)">
+      <div class="sender-info">
+        <strong>{{ sender }}</strong>
+      </div>
+    </li>
+  </ul>
+  <p *ngIf="senders.length === 0">No conversations available.</p>
+</div>
+
+<div *ngIf="isChatOpen" class="chat-container">
+  <app-chat
+    [messages]="selectedMessages"
+    [targetUser]="selectedSender"
+    (chatClosed)="closeChat()"
+  ></app-chat>
+</div>

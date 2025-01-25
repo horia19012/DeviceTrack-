@@ -1,0 +1,33 @@
+.background-wrapper {
+  position: relative; /* Enable absolute positioning for children */
+  min-height: 100vh; /* Ensure it covers the full height */
+  overflow: hidden; /* Prevent overflow from child components */
+}
+
+.background-wrapper::before {
+  content: ""; /* Necessary for the pseudo-element */
+  position: absolute; /* Position it absolutely within the wrapper */
+  top: 0; /* Align it to the top */
+  left: 0; /* Align it to the left */
+  right: 0; /* Stretch to the right */
+  bottom: 0; /* Stretch to the bottom */
+  background-image: url('assets/background.jpg'); /* Path to your image */
+  background-size: cover; /* Cover the entire background */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-position: center; /* Center the image */
+  z-index: -1; /* Set a negative z-index to place it behind other content */
+}
+
+.navbar {
+  position: relative; /* Ensure navbar remains on top */
+  z-index: 1; /* Bring the navbar in front of the background */
+}
+
+.router-outlet {
+  position: relative; /* Ensure the outlet is positioned relative to the wrapper */
+  z-index: 1; /* Bring the outlet in front of the background */
+}
+
+.navbar-nav .nav-item {
+  margin-right: 10px; /* Add some space between nav items */
+}
